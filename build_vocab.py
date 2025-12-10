@@ -48,6 +48,7 @@ def build_entry(
     translations: List[str],
     level: str,
     topic: str,
+    language: str,
 ) -> dict:
     article = ARTICLE_MAP.get(gender) if gender is not None else None
     full_form = f"{article} {lemma}" if article else None
@@ -68,6 +69,7 @@ def build_entry(
         "accepted_answers_de": accepted,
         "level": level,
         "topic": topic,
+        "language": language,
     }
 
 
@@ -90,6 +92,7 @@ def process_lines(lines: Iterable[str]) -> List[dict]:
             translations = data["translations_ko"]
             level = data["level"]
             topic = data["topic"]
+            language = data["language"]
         except KeyError as exc:
             raise ValueError(f"Missing required field {exc.args[0]!r} on line {line_number}") from exc
 
@@ -104,6 +107,7 @@ def process_lines(lines: Iterable[str]) -> List[dict]:
                 translations=sense_translations,
                 level=level,
                 topic=topic,
+                language=language,
             )
             entries.append(entry)
             current_id += 1
